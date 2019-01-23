@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8">
+  <title>Video Watcher</title>
+  <link rel="stylesheet" href="http://www.teaching-materials.org/common/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Courgette" rel="stylesheet">
+  <link rel="canonical" href="/web/tweet-button">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!-- <script src="https://apis.google.com/js/platform.js" async='async' defer='defer'></script> -->
+  <style type="text/css">
+  /* This puts titles always on a separate line from thumbnails */
+  #videos-list img {
+    display: block;
+  }
+
+  body {
+    background-color: #f6c7bd;
+  }
+  h1 {
+    font-family: 'Courgette', cursive;
+  }
+  </style>
+ </head>
+ <body>
+
+<div class="container">
+
+ <div class="row">
+   <div class="col-md-12">
+    <h1 class="page-header">Best Videos Ever ❤
+	    <div class="g-plusone" data-size="medium" data-annotation="none"></div> <!-- google button -->
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'https://apis.google.com/js/plusone.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>
+
+
+<a class="tumblr-share-button" href="https://www.tumblr.com/share"></a> <!-- tumblr button -->
+<script id="tumblr-js" async src="https://assets.tumblr.com/share-button.js"></script><div data-href="<?php the_permalink() ?>"
+data-width="450" data-show-faces="false" data-send="false">
+</div>
+
+<a href="https://www.pinterest.com/pin/create/button/" data-pin-do="buttonBookmark"> <!-- pinterest button -->
+</a>
+
+<!-- facebook button -->
+<div class="fb-like" data-href="https://www.facebook.com/Best.Video.Clips.Ever/" data-layout="standard" data-action="like" data-size="small" data-show-faces="false" data-share="true"></div><div id="fb-root"></div>
+<script src="//assets.pinterest.com/js/pinit.js"
+type="text/javascript" async defer data-pin-hover="true"></script><script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0';
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script></h1>
+   </div>
+ </div>
+
+ <div class="row">
+   <div class="col-md-3">
+     <ul id="videos-list">
+    </ul>
+   </div>
+   <div class="col-md-9" id="video-watcher">
+   </div>
+ </div>
+
+<!-- counter -->
+ <div style="text-align:center; margin-top: 30px; clear:both;">
+  <a href="https://info.flagcounter.com/nEFy"><img src="https://s04.flagcounter.com/count/nEFy/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_12/viewers_0/labels_0/pageviews_0/flags_0/" alt="Flag Counter" border="0"></a>
+<!-- twitter button will show up at bottom of page near the counter -->
+  <a class="twitter-share-button"
+    href="https://twitter.com/intent/tweet" data-size="medium">Tweet</a>
+</div>
+
+</div>
+<!-- External javascript sources-->
+  <script type="text/javascript" src="http://www.teaching-materials.org/common/youtube.js"></script> <!-- x's replaced with script tag-->
+  <script type="text/javascript" src="http://www.teaching-materials.org/common/js/jquery.min.js"></script>
+
+<!-- javascript code for twitter button -->
+  <script>window.twttr = (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0],
+      t = window.twttr || {};
+    if (d.getElementById(id)) return t;
+    js = d.createElement(s);
+    js.id = id;
+    js.src = "https://platform.twitter.com/widgets.js";
+    fjs.parentNode.insertBefore(js, fjs);
+
+    t._e = [];
+    t.ready = function(f) {
+      t._e.push(f);
+    };
+
+    return t;
+  }(document, "script", "twitter-wjs"));
+</script>
+
+ <script>
+
+ function addVideoToList(video) {
+    var videoLink = $('<a>');
+    videoLink.append(video.title);
+    var linkUrl = videoLink.attr('href');
+    var thumbnailUrl = youtube.generateThumbnailUrl(video.youtubeId); //period after generateThumbnailUrl removed, u in Url capitalized
+    var thumbnailImg = $('<img>');
+    thumbnailImg.attr('src', thumbnailUrl);
+    videoLink.append(thumbnailImg);
+
+    videoLink.on('click', function(e) {
+        e.preventDefault();
+        var videoTitle = $('<h2>');
+        videoTitle.html(video.title + ' <small>' + video.author + '</small>');
+        var videoEmbed = $('<iframe></iframe>'); //x's replaced with iframe tag for embedding videos
+        videoEmbed.attr('src', youtube.generateEmbedUrl(video.youtubeId) + '?autoplay=1'); //period after generateEmbedUrl removed
+        videoEmbed.attr('width', 560);
+        videoEmbed.attr('height', 315);
+
+        var videoRating = $('<img></img>');
+        videoRating.attr('src', 'https://chart.googleapis.com/chart?chs=225x125&cht=gom&chd=t:' + video.rating);
+
+        var videoWatcher = $('#video-watcher');
+        videoWatcher.hide();
+        videoWatcher.empty();
+        videoWatcher.append(videoTitle);
+        videoWatcher.append(videoEmbed);
+        videoWatcher.append(videoRating);
+        videoWatcher.fadeIn();
+    });
+
+    var videoItem = $('<li>');
+    videoItem.append(videoLink);
+    $('#videos-list').append(videoItem);
+ }
+
+ var videos = [
+   {"youtubeId": "O0cAx1jLbJk",
+     "title": "Koala Gets Kicked Out of Tree and Cries!",
+     "author": "Koalafication",
+     "rating": 100
+   },
+   {"youtubeId": "_jBsJDcPkHk",
+     "title": "TOP 5 Scariest Roller-Coasters In The World 2016 HD Clips",
+     "author": "Tyler&Tyler",
+     "rating": 80
+   },
+   {"youtubeId": "I2rkW0Tu3H8",
+     "title": "The Beatles I Want To Hold Your Hand 1963",
+     "author": "Mauricio batista de queiroz",
+     "rating": 70
+   },
+   {"youtubeId": "l-kEMaz_gck",
+     "title": "Drawing Maleficent by Toni Mahfud",
+     "author": "Toni Mahfud",
+     "rating": 80
+   },
+   {"youtubeId": "J---aiyznGQ",
+     "title": "Charlie Schmidt's Keyboard Cat! - THE ORIGINAL!",
+     "author": "Keyboard Cat",
+     "rating": 75
+   }
+ ]
+
+for (var i = 0; i < videos.length; i++) {
+   addVideoToList(videos[i]);
+}
+
+ </script>
+ </body>
+</html>
